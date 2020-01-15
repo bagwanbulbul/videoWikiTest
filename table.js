@@ -10,7 +10,7 @@ var knex = require('knex')({
 knex.schema.createTable('register', (table) => {
     table.increments('user_id'),
     table.string("name"),
-    table.string("email_id"),
+    table.string("email_id").unique(),
     table.string("password")
 
 })
