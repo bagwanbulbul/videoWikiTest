@@ -23,18 +23,18 @@ user.get("/login",function(req,res){
     response.then((data)=>{
         for(var i=0; i<data.length; i++){
             if(data[i]["email_id"]==email_id && data[i]["password"]==password){
-                let token = jwt.sign({"user":data},"bulbul")
+                let token = jwt.sign({"user":data[i]},"secret_key")
                 res.cookie(token)
-                res.json({token})
-            }
-            else{
-                res.send("incorect password")
+                jwt.verify(token,"secret_key",(err,result)=>{
+                    res.json({"status":"write","massage":"login successful ","token":result})
+                }) 
             }
         }
     }).catch((err)=>{
         res.send(err)
     })
 })
+
 
 
 module.exports = user
