@@ -19,17 +19,23 @@ user.post("/signUp",function(req,res){
 user.get("/login",function(req,res){
     let email_id=req.body.email_id
     let password=req.body.password
-    let response=add.login()
+    let response=add.login(email_id)
     response.then((data)=>{
-        for(var i=0; i<data.length; i++){
-            if(data[i]["email_id"]==email_id && data[i]["password"]==password){
-                let token = jwt.sign({"user":data[i]},"secret_key")
-                res.cookie(token)
-                jwt.verify(token,"secret_key",(err,result)=>{
-                    res.json({"status":"write","massage":"login successful ","token":result})
-                }) 
-            }
+        if(data.length==0){
+            res.send("your email is incorect please try again...")
         }
+        else if(data[0]["password"]==password){
+            let token = jwt.sign({"user":data[0]},"secret_key")
+            res.cookie(token)
+            jwt.verify(token,"secret_key",(err,result)=>{
+                res.json({"status":"write","massage":"login successful ","token":result})
+            }) 
+            
+        }
+        else{
+            res.send("your password is incorect try again....")
+        }
+        
     }).catch((err)=>{
         res.send(err)
     })
