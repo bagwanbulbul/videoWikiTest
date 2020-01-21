@@ -13,5 +13,8 @@ let userPostData = (userPost)=>{
 let postLikes=(likes)=>{
     return knex.select("*").from("post_likes").insert(likes)
 }
+let countLikes=(post_id)=>{
+    return knex.select("*").from("post_likes").where("post_id",post_id)
+}
 
-module.exports={userData,login,userPostData,postLikes}
+module.exports={userData,login,userPostData,postLikes,countLikes}
