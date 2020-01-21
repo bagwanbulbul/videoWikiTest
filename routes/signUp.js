@@ -29,8 +29,7 @@ user.get("/login",function(req,res){
             res.cookie(token)
             jwt.verify(token,"secret_key",(err,result)=>{
                 res.json({"status":"write","massage":"login successful ","token":result})
-            }) 
-            
+            })   
         }
         else{
             res.send("your password is incorect try again....")
@@ -63,5 +62,20 @@ user.post("/post_likes",function(req,res){
         res.send(err)
     })
 })
+user.get("/count_likes/:post_id",function(req,res){
+    let post_id=req.params.post_id
+    let response=add.countLikes(post_id)
+    response.then((data)=>{
+        var count = 0;
+        for(var i=0; i<data.length; i++){
+            if(data[i]["likes"]==true){
+                count=count+1
+            }
+        }
+        res.json({"status":"write","likes":count})
+    }).catch((err)=>{
+        console.log(err)
+    })
 
+})
 module.exports = user
