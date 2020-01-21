@@ -13,7 +13,7 @@ user.post("/signUp",function(req,res){
     response.then((data)=>{
         res.send(data)
     }).catch((err)=>{
-        res.send(err)
+        res.send({"staus":"wrong entry","massage":"your email is already exists pleas use another"})
     })
 })
 user.get("/login",function(req,res){
@@ -35,12 +35,33 @@ user.get("/login",function(req,res){
         else{
             res.send("your password is incorect try again....")
         }
-        
     }).catch((err)=>{
         res.send(err)
     })
 })
-
-
+user.post("/creat_post",function(req,res){
+    let userPost = {"post":req.body.post
+    }
+    let response=add.userPostData(userPost)
+    response.then((data)=>{
+        res.send(data)
+    }).catch((err)=>{
+        res.send(err)
+    })
+})
+user.post("/post_likes",function(req,res){
+    let likes= {
+        user_id:req.body.user_id,
+        post_id:req.body.post_id,
+        likes:req.body.likes,
+        comments:req.body.comments
+    }
+    let response=add.postLikes(likes)
+    response.then((data)=>{
+        res.send(data)
+    }).catch((err)=>{
+        res.send(err)
+    })
+})
 
 module.exports = user
